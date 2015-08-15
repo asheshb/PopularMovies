@@ -3,6 +3,7 @@ package com.bitwindow.popularmovies;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -84,6 +85,11 @@ public class MainActivityFragment extends Fragment {
 
             }
         });
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            gridView.setNumColumns(3);
+        } else{
+            gridView.setNumColumns(2);
+        }
         return rootView;
     }
 
