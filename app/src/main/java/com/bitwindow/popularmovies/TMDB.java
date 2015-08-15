@@ -54,7 +54,7 @@ class TMDB {
     public static URL getMovieUrl(String sort_order){
         String sort_by = "popularity.desc";
         //To filter out 1 vote / 5 star wonders
-        String min_vote = "1000";
+        String min_vote = "200";
         if (sort_order.equals("rating")) {
             sort_by = "vote_average.desc";
         }
