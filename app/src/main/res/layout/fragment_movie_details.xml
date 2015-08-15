@@ -11,7 +11,7 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="200dp"
             android:id="@+id/ivBackDrop"
             android:scaleType="centerCrop"
             android:layout_alignParentTop="true"
@@ -30,7 +30,6 @@
             android:textAppearance="?android:textAppearanceLarge"
             android:textStyle="bold"
             android:gravity="center_vertical"
-            android:singleLine="true"
             tools:text="Movie Title"
              />
 
