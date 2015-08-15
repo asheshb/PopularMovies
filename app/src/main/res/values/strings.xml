@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Popular Movies</string>
+    <string name="title_activity_movie_details">Movie Details</string>
+
+    <string name="sort_order_key" translatable="false">sort_order</string>
+    <string name="movie_items_key" translatable="false">movie_items</string>
+    <string name="movie_item_key" translatable="false">movie_item</string>
+    <string name="genres_key" translatable="false">genres</string>
+
+    <string name="poster">Movie Poster</string>
+
+    <string name="rating_value" translatable="false">rating</string>
+    <string name="popular_value" translatable="false">popular</string>
+
+    <string name="menu_sort_rating">Show Highest Rated</string>
+    <string name="menu_sort_popular">Show Most Popular</string>
+
+
+    <plurals
+        name="rating_desc">
+        <item quantity="one">%1$.1f/10 from %2$d user</item>
+        <item quantity="other">%1$.1f/10 from %2$d users</item>
+    </plurals>
+
+    <string name="exception_no_internet">There was a problem with the network. Please check the internet connection.</string>
+    <string name="exception_json">An occurred while processing the data.</string>
+
+
+</resources>

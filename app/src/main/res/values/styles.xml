@@ -1,0 +1,26 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+
+        <!-- colorPrimary is used for the default action bar background -->
+        <item name="colorPrimary">@color/app_green</item>
+
+        <!-- colorPrimaryDark is used for the status bar -->
+        <item name="colorPrimaryDark">@color/app_dark_green</item>
+
+        <!-- colorAccent is used as the default value for colorControlActivated,
+        which is used to tint widgets -->
+        <item name="colorAccent">@color/app_light_green</item>
+
+        <item name="actionOverflowMenuStyle">@style/CMOptionsMenu</item>
+
+    </style>
+
+    <style name="CMOptionsMenu" parent="Widget.AppCompat.PopupMenu.Overflow">
+        <item name="android:popupBackground">@color/app_light_green</item>
+    </style>
+
+
+</resources>

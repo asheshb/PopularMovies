@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity$ForecastFragment"
+
+    >
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/poster"
+        android:scaleType="fitCenter"
+        android:contentDescription="@string/poster"
+        android:adjustViewBounds="true"
+         />
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ratingBar"
+        android:layout_alignBottom="@+id/poster"
+        android:paddingBottom="10dp"
+        style="?android:attr/ratingBarStyleSmall"
+        android:max="10"
+        android:numStars="10"
+        android:stepSize="0.5"
+        android:isIndicator="true"
+        android:layout_centerInParent="true"
+        />
+
+
+</RelativeLayout>
