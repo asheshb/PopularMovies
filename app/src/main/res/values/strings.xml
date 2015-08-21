@@ -22,8 +22,6 @@
         <item quantity="other">%1$.1f/10 from %2$d users</item>
     </plurals>
 
-    <string name="exception_no_internet">There was a problem with the network. Please check the internet connection.</string>
-    <string name="exception_json">An occurred while processing the data.</string>
 
 
 </resources>

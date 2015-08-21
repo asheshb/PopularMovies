@@ -3,6 +3,10 @@ package com.bitwindow.popularmovies;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.Date;
+
 /**
  * Class to store the movie details
  */
@@ -10,14 +14,31 @@ class MovieItem implements Parcelable {
     private static final String LOG_TAG = MovieItem.class.getSimpleName();
     private static final boolean DEBUG = false; // Set this to false to disable logs.
 
+
     private Integer id;
+
+    @SerializedName("original_title")
     private String title;
+
+    @SerializedName("poster_path")
     private String posterUrl;
+
+    @SerializedName("backdrop_path")
     private String backdropUrl;
+
+    @SerializedName("overview")
     private String synopsis;
+
+    @SerializedName("vote_average")
     private Double userRating;
-    private String releaseDate;
+
+    @SerializedName("release_date")
+    private Date releaseDate;
+
+    @SerializedName("vote_count")
     private Integer voteCount;
+
+    @SerializedName("genre_ids")
     private int[] genres;
 
     public Integer getId(){
@@ -60,11 +81,11 @@ class MovieItem implements Parcelable {
         this.userRating = userRating;
     }
 
-    public String getReleaseDate(){
+    public Date getReleaseDate(){
         return releaseDate;
     }
 
-    public void setReleaseDate(String releaseDate){ this.releaseDate = releaseDate;}
+    public void setReleaseDate(Date releaseDate){ this.releaseDate = releaseDate;}
 
     public Integer getVoteCount(){ return voteCount; }
 
@@ -89,7 +110,7 @@ class MovieItem implements Parcelable {
         dest.writeString(this.backdropUrl);
         dest.writeString(this.synopsis);
         dest.writeValue(this.userRating);
-        dest.writeString(this.releaseDate);
+        dest.writeLong(releaseDate.getTime());
         dest.writeInt(this.voteCount);
         dest.writeIntArray(this.genres);
     }
@@ -104,7 +125,7 @@ class MovieItem implements Parcelable {
         this.backdropUrl = in.readString();
         this.synopsis = in.readString();
         this.userRating = (Double) in.readValue(Double.class.getClassLoader());
-        this.releaseDate = in.readString();
+        this.releaseDate = new Date(in.readLong());
         this.voteCount = in.readInt();
         this.genres = in.createIntArray();
     }

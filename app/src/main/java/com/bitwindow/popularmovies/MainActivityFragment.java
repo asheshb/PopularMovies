@@ -4,10 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,13 +20,12 @@ import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import org.json.JSONException;
-
-import java.net.SocketTimeoutException;
-import java.net.URL;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 
 /**
@@ -37,11 +36,10 @@ public class MainActivityFragment extends Fragment {
     private static final boolean DEBUG = false; // Set this to false to disable logs.
 
     private ArrayList<MovieItem> mMovieListItems;
-    private HashMap<Integer,String> mGenres;
+    private ArrayList<GenreItem> mGenreList;
     private MovieAdapter mMovieAdapter;
     private ProgressBar mProgressBar;
     private String mSortOrder;
-    private FetchInternetDataTask mFetchInternetDataTask;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,14 +47,15 @@ public class MainActivityFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if(savedInstanceState == null || !savedInstanceState.containsKey(getString(R.string.movie_items_key))) {
             mMovieListItems = new ArrayList<MovieItem>();
+            mGenreList = new ArrayList<GenreItem>();
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
             mSortOrder = prefs.getString(getString(R.string.sort_order_key),
                     getString(R.string.popular_value));
         }
         else {
             mMovieListItems = savedInstanceState.getParcelableArrayList(getString(R.string.movie_items_key));
+            mGenreList = savedInstanceState.getParcelableArrayList(getString(R.string.genres_key));
             mSortOrder = savedInstanceState.getString(getString(R.string.sort_order_key));
-            mGenres = (HashMap<Integer,String>) savedInstanceState.getSerializable(getString(R.string.genres_key));
 
         }
 
@@ -79,7 +78,7 @@ public class MainActivityFragment extends Fragment {
                 MovieItem movieItem = mMovieAdapter.getItem(position);
                 Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
                 intent.putExtra(getString(R.string.movie_item_key), movieItem);
-                intent.putExtra(getString(R.string.genres_key), mGenres);
+                intent.putExtra("genres_text", getGenreString(movieItem.getGenres()));
                 startActivity(intent);
 
 
@@ -146,18 +145,11 @@ public class MainActivityFragment extends Fragment {
     }
 
     @Override
-    public void onPause() {
-        if (DEBUG) Log.i(LOG_TAG, "onPause()");
-        cancelDataFetch();
-        super.onPause();
-    }
-
-    @Override
     public void onSaveInstanceState(Bundle outState) {
         if (DEBUG) Log.i(LOG_TAG, "onSaveInstanceState");
         outState.putParcelableArrayList(getString(R.string.movie_items_key), mMovieListItems);
+        outState.putParcelableArrayList(getString(R.string.genres_key), mGenreList);
         outState.putCharSequence(getString(R.string.sort_order_key), mSortOrder);
-        outState.putSerializable(getString(R.string.genres_key), mGenres);
         super.onSaveInstanceState(outState);
     }
 
@@ -165,110 +157,66 @@ public class MainActivityFragment extends Fragment {
      * Updates the GridView by calling AsyncTask class
      */
     private void updateMovieList() {
-        URL url = TMDB.getMovieUrl(mSortOrder);
-        if(url != null) {
-            cancelDataFetch();
-            mFetchInternetDataTask = new FetchInternetDataTask(new FetchMovieItemsTaskCompleteListener());
-            mFetchInternetDataTask.execute(url);
-        }
-        url = TMDB.getGenresUrl();
-        //Fill Genres if not already
-        if(mGenres == null){
-            if (DEBUG) Log.i(LOG_TAG, "updateMovieList() Genres");
-            mFetchInternetDataTask = new FetchInternetDataTask(new FetchGenresTaskCompleteListener());
-            mFetchInternetDataTask.execute(url);
-
+        String sortOrder;
+        mProgressBar.setVisibility(ProgressBar.VISIBLE);
+        if(mSortOrder.equals(getString(R.string.rating_value))){
+            sortOrder = TMDB.SORT_RATING;
+        } else{
+            sortOrder = TMDB.SORT_POPULAR;
         }
 
-    }
-
-
-    /**
-     * To stop any previous running tasks
-     */
-    private void cancelDataFetch(){
-        if(mFetchInternetDataTask!=null && mFetchInternetDataTask.getStatus() != AsyncTask.Status.FINISHED) {
-            mFetchInternetDataTask.cancel(true);
-        }
-    }
-
-
-
-
-
-    /**
-     * Handles the callback from AsyncTask for fetching Movie items
-     */
-    class FetchMovieItemsTaskCompleteListener implements AsyncTaskCompleteListener<String>
-    {
-
-        @Override
-        public void onTaskComplete(String result)
-        {
-            if(result != null) {
-                try {
-                    mMovieListItems = TMDB.getMovieFromJson(result);
+        RestClient.getTMDBApiClient().getMovies(sortOrder, TMDB.MIN_VOTE, TMDB.API_KEY, new Callback<List<MovieItem>>()
+            {
+                @Override
+                public void success(List<MovieItem> movieItems, Response response)
+                {
+                    mMovieListItems = (ArrayList<MovieItem>) movieItems;
                     mMovieAdapter.updateAdapter(mMovieListItems);
-
-                } catch(JSONException e){
-                    Toast.makeText(getActivity(), getString(R.string.exception_json),Toast.LENGTH_SHORT).show();
-                    Log.e(LOG_TAG, e.getMessage());
-
-                } finally{
                     mProgressBar.setVisibility(ProgressBar.INVISIBLE);
                 }
-            }
-        }
 
-        @Override
-        public void onTaskBefore()
-        {
-            mProgressBar.setVisibility(ProgressBar.VISIBLE);
-        }
+                @Override
+                public void failure(RetrofitError error)
+                {
+                    mProgressBar.setVisibility(ProgressBar.INVISIBLE);
+                    Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e(LOG_TAG, "Error : " + error.getMessage());
+                }
+            });
 
-        @Override
-        public void onExceptionRaised(Exception e) {
-            if(e instanceof SocketTimeoutException || e instanceof UnknownHostException){
-                Toast.makeText(getActivity(), getString(R.string.exception_no_internet),Toast.LENGTH_LONG).show();
-            } else{
-                Toast.makeText(getActivity(), e.getMessage(),Toast.LENGTH_SHORT).show();
-            }
-            mProgressBar.setVisibility(ProgressBar.INVISIBLE);
+        if(mGenreList == null || mGenreList.size()<=0){
+
+            RestClient.getTMDBApiClient().getGenres(TMDB.API_KEY, new Callback<List<GenreItem>>() {
+                @Override
+                public void success(List<GenreItem> genreItems, Response response) {
+                    mGenreList = (ArrayList<GenreItem>) genreItems;
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.e(LOG_TAG, "Error getGenres : " + error.getMessage());
+                }
+            });
+
+
         }
     }
 
-    /**
-     * Handles the callback from AsyncTask for fetching Genre list
-     */
-    class FetchGenresTaskCompleteListener implements AsyncTaskCompleteListener<String>
-    {
 
-        @Override
-        public void onTaskComplete(String result)
-        {
-            if(mGenres ==null && result != null) {
-                try {
-                    mGenres = TMDB.getGenresFromJson(result);
-                } catch(JSONException e){
-                    //As this is non crucial feature don't show it to user
-                    Log.d(LOG_TAG, e.getMessage());
-
+    private String getGenreString(int[] genres){
+        if(mGenreList == null || mGenreList.size()<0)
+            return "";
+        int id;
+        List<String> genresText =  new ArrayList<String>();;
+        for(GenreItem d : mGenreList){
+            for (int i : genres) {
+                if(d.getId() == i){
+                    genresText.add(d.getName());
                 }
             }
         }
-
-        @Override
-        public void onTaskBefore()
-        {
-
-        }
-
-        @Override
-        public void onExceptionRaised(Exception e) {
-            //As this is non crucial feature don;t show it to user
-        }
+        return TextUtils.join(", ", genresText);
     }
-
 
 //FOLLOWING FUNCTIONS FOR DEBUGGING PURPOSE ONLY.
 
@@ -277,6 +225,13 @@ public class MainActivityFragment extends Fragment {
         if (DEBUG) Log.i(LOG_TAG, "onResume()");
         super.onResume();
     }
+
+    @Override
+    public void onPause() {
+        if (DEBUG) Log.i(LOG_TAG, "onPause()");
+        super.onPause();
+    }
+
 
     @Override
     public void onStop() {

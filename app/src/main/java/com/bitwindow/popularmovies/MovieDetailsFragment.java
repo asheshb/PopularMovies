@@ -12,7 +12,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.HashMap;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 
 /**
@@ -31,7 +32,6 @@ public class MovieDetailsFragment extends Fragment {
         Bundle data = getActivity().getIntent().getExtras();
         MovieItem movieItem = data.getParcelable(getString(R.string.movie_item_key));
 
-        HashMap<Integer,String> genres = (HashMap<Integer,String>)  data.getSerializable(getString(R.string.genres_key));
 
         String title = movieItem.getTitle();
         String url = movieItem.getBackdropUrl("large");
@@ -57,25 +57,12 @@ public class MovieDetailsFragment extends Fragment {
 
 
         TextView tvReleaseDate = (TextView) rootView.findViewById(R.id.tvReleaseDate);
-        tvReleaseDate.setText(movieItem.getReleaseDate());
+        SimpleDateFormat sdf = new SimpleDateFormat("d MMM, yyyy", Locale.getDefault());
+        tvReleaseDate.setText( sdf.format(movieItem.getReleaseDate()));
 
-
-        if(genres!= null) {
-            int[] movie_genres = movieItem.getGenres();
-            if(movie_genres != null) {
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < movie_genres.length; i++) {
-                    if (genres.containsKey(movie_genres[i])) {
-                        if(sb.length() > 0) {
-                            sb.append(", ");
-                        }
-                        sb.append(genres.get(movie_genres[i]));
-                    }
-                }
-                TextView tvGenres = (TextView) rootView.findViewById(R.id.tvGenres);
-                tvGenres.setText(sb.toString());
-            }
-        }
+        String genresText = data.getString("genres_text");
+        TextView tvGenres = (TextView) rootView.findViewById(R.id.tvGenres);
+        tvGenres.setText(genresText);
 
         return rootView;
     }
