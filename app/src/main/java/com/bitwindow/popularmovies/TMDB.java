@@ -3,7 +3,7 @@ package com.bitwindow.popularmovies;
 /**
  * Class to handle all TMDB related acitvities
  */
-class TMDB {
+public class TMDB {
     private static final String LOG_TAG = TMDB.class.getSimpleName();
     private static final boolean DEBUG = false; // Set this to false to disable logs.
 
@@ -11,6 +11,7 @@ class TMDB {
     //PLEASE INPUT YOUR TMDB KEY HERE
     public final static String API_KEY = "";
     public final static String BASE_URL = "https://api.themoviedb.org/3/";
+    public final static String ID_PARAM = "id";
     public final static String API_KEY_PARAM = "api_key";
     public final static String SORT_PARAM = "sort_by";
     public final static String MIN_VOTE_PARAM = "vote_count.gte";
@@ -19,7 +20,7 @@ class TMDB {
     public final static String SORT_RATING="vote_average.desc";
     public final static String SORT_POPULAR="popularity.desc";
 
-    /**
+    /*
      * Returns param used in TMDB URL to fetch poster size.
      * @param size param for the poster size used in TMDB poster URL
      * @return the param to be used based on readable size formats
@@ -35,4 +36,5 @@ class TMDB {
         }
 
     }
+
 }

@@ -2,20 +2,30 @@
     <string name="app_name">Popular Movies</string>
     <string name="title_activity_movie_details">Movie Details</string>
 
-    <string name="sort_order_key" translatable="false">sort_order</string>
-    <string name="movie_items_key" translatable="false">movie_items</string>
-    <string name="movie_item_key" translatable="false">movie_item</string>
-    <string name="genres_key" translatable="false">genres</string>
 
     <string name="poster">Movie Poster</string>
-
-    <string name="rating_value" translatable="false">rating</string>
-    <string name="popular_value" translatable="false">popular</string>
-
-    <string name="menu_sort_rating">Show Highest Rated</string>
-    <string name="menu_sort_popular">Show Most Popular</string>
+    <string name="video">Play Video</string>
+    <string name="video_error">There was an error in playing the video.</string>
 
 
+    <string name="menu_list_rating">Show Highest Rated</string>
+    <string name="menu_list_popular">Show Most Popular</string>
+    <string name="menu_list_favorite">Show My Favorite</string>
+
+
+    <!-- Related to showing/adding/removing a movie as favorite -->
+    <string name="favorite_add">Add to favorites</string>
+    <string name="favorite_remove">Remove from favorites</string>
+    <string name="favorite_added">Added to the favorite list.</string>
+    <string name="favorite_removed">Removed from the favorite list.</string>
+    <string name="favorite_empty">There are no favorite movies</string>
+
+    <!-- Various headings on movie details screen -->
+    <string name="summary">Summary</string>
+    <string name="videos">Videos</string>
+    <string name="reviews">Reviews</string>
+
+    <!-- Movie rating description -->
     <plurals
         name="rating_desc">
         <item quantity="one">%1$.1f/10 from %2$d user</item>

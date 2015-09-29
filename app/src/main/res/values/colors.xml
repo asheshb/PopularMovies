@@ -3,6 +3,7 @@
     <color name="app_green">#4bae4f</color>
     <color name="app_dark_green">#1f5621</color>
     <color name="app_light_green">#C8E6C9</color>
+    <color name="grey">#cccccc</color>
 
 
 </resources>

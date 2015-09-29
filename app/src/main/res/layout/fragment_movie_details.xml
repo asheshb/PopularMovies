@@ -1,6 +1,6 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
@@ -16,7 +16,7 @@
             android:scaleType="centerCrop"
             android:layout_alignParentTop="true"
             android:contentDescription="@string/poster"
-         />
+            />
 
 
         <TextView
@@ -25,13 +25,16 @@
             android:id="@+id/tvTitle"
             android:layout_alignBottom="@+id/ivBackDrop"
             android:padding="8dp"
+            android:paddingLeft="@dimen/details_padding"
+            android:paddingRight="@dimen/details_padding"
             android:textColor="#ffffff"
-            android:background="#80000000"
             android:textAppearance="?android:textAppearanceLarge"
             android:textStyle="bold"
             android:gravity="center_vertical"
             tools:text="Movie Title"
-             />
+            />
+
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,26 +43,30 @@
             android:layout_below="@+id/ivBackDrop"
             android:id="@+id/llDetails"
             android:paddingTop="10dp"
-            android:paddingLeft="30dp"
-            android:paddingRight="30dp"
+            android:paddingLeft="@dimen/details_padding"
+            android:paddingRight="@dimen/details_padding"
             >
 
             <ImageView
-                android:layout_width="90dp"
+                android:layout_width="126dp"
                 android:layout_height="150dp"
                 android:id="@+id/ivPoster"
                 android:contentDescription="@string/poster"
-                 />
+                android:paddingRight="10dp"
+                android:paddingEnd="10dp"
+                android:layout_weight=".1"
+
+
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="150dp"
                 android:orientation="vertical"
-                android:paddingTop="10dp"
-                android:paddingLeft="30dp"
+                android:paddingLeft="@dimen/details_padding"
                 android:paddingRight="10dp"
-                android:paddingStart="30dp"
                 android:paddingEnd="10dp"
+                android:layout_weight=".9"
                 >
 
                 <TextView
@@ -82,25 +89,118 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:id="@+id/tvGenres"
+                    android:layout_marginTop="5dp"
+                    android:id="@+id/tvGenre"
                     android:textSize="12sp"
-                    tools:text="Action, Comedy"
+                    tools:text="Action, Comedy, Drama"
+                    android:layout_weight="1"
                     />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ibtnFavorite"
+                    android:src="@null"
+                    android:contentDescription="@string/favorite_add"
+                    android:background="?android:selectableItemBackground"
+                    android:layout_gravity="center_horizontal"
+
+
+
+                    />
+
+
 
             </LinearLayout>
 
         </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvSynopsisHeader"
+            android:layout_below="@+id/llDetails"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:visibility="invisible"
+            />
+
+
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tvSynopsis"
-            android:layout_below="@+id/llDetails"
+            android:layout_below="@+id/tvSynopsisHeader"
             android:paddingLeft="30dp"
             android:paddingRight="30dp"
-            android:paddingBottom="10dp"
+
             />
 
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvVideoHeader"
+            android:layout_below="@+id/tvSynopsis"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:layout_marginTop="40dp"
+            android:visibility="invisible"
+            />
+
+
+        <com.bitwindow.popularmovies.WrappedGridView
+            android:id="@+id/gvVideo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:numColumns="auto_fit"
+            android:stretchMode="columnWidth"
+            android:gravity="center"
+            android:choiceMode="singleChoice"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/tvVideoHeader"
+            android:scrollbars="none"
+            android:orientation="vertical"
+            android:fadingEdge="none"
+            />
+
+        <ProgressBar
+            android:id="@+id/pbVideo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/gvVideo"
+            style="@android:style/Widget.ProgressBar.Inverse"
+            android:visibility="invisible" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvReviewHeader"
+            android:layout_below="@+id/pbVideo"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:visibility="invisible"
+            />
+
+        <com.bitwindow.popularmovies.WrappedListView
+            android:id="@+id/lvReview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:paddingBottom="40dp"
+            android:layout_below="@+id/tvReviewHeader"
+            android:scrollbars="none"
+            android:orientation="vertical"
+            android:fadingEdge="none"
+            />
 
 
     </RelativeLayout>

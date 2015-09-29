@@ -1,10 +1,16 @@
-PopularMovies project for Android Developer Nanodegree
-Stage 1: Fetch movie list from TMDB database and display in grid. On click of a grid item show the movie details. Switch between "Most Popular" and "Highest Rated" using overflow menu.
+#### PopularMovies project for Android Developer Nanodegree
 
-Extra features:
-#1 Use of launchMode="singleTop" for Main Activity so that it’s is not recreated unnecessarily when navigating back via "Up" button from Movie Details activity
-#2 Fetching Genres list from TMDB to show the Genres on Movie Details activity
+##### Stage 1
+* Fetch movie list from TMDB database and display in grid. 
+* On click of a grid item show the movie details. 
+* Switch between "Most Popular" and "Highest Rated" using overflow menu.
 
-NOTE: Before running the app please place your TMDB API key in TMDB.java line 25
+##### Stage 2: 
+* Added storing of favorites movie in database. 
+* Showing videos and trailers for movies
+* Added two pane layout for tablets
+
+
+**NOTE**: Before running the app please place your TMDB API key in TMDB.java line 12
 
 

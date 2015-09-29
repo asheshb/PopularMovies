@@ -28,6 +28,9 @@
                 android:value="com.bitwindow.popularmovies.MainActivity" />
 
         </activity>
+        <provider
+            android:name=".data.MovieProvider"
+            android:authorities="com.bitwindow.popularmovies" />
     </application>
 
 </manifest>

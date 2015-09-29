@@ -2,23 +2,38 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity$ForecastFragment"
+    android:background="@drawable/touch_selector"
 
     >
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="154dp"
         android:id="@+id/poster"
-        android:scaleType="fitCenter"
         android:contentDescription="@string/poster"
-        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
          />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvMovieTitle"
+        android:layout_below="@+id/poster"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:gravity="center_horizontal"
+        android:background="#000000"
+        android:textColor="#ffffff"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+
+
+        />
     <RatingBar
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/ratingBar"
-        android:layout_alignBottom="@+id/poster"
+        android:layout_below="@+id/tvMovieTitle"
         android:paddingBottom="10dp"
         style="?android:attr/ratingBarStyleSmall"
         android:max="10"
@@ -26,7 +41,7 @@
         android:stepSize="0.5"
         android:isIndicator="true"
         android:layout_centerInParent="true"
+        android:background="#000000"
         />
-
 
 </RelativeLayout>
