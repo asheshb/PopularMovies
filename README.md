@@ -9,7 +9,7 @@
 * Added storing of favorites movie in database. 
 * Showing videos and trailers for movies
 * Added two pane layout for tablets
-
+* Share intent for video on movie details screen
 
 **NOTE**: Before running the app please place your TMDB API key in TMDB.java line 12
 

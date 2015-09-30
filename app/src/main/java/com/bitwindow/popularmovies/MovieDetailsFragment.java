@@ -11,8 +11,13 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -118,7 +123,20 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
     private TextView mtvReviewHeader;
     private ImageButton mibtnFavorite;
 
+    // Video loader progress bar
     private ProgressBar mpbVideo;
+
+    // To share video url
+    private ShareActionProvider mShareActionProvider;
+    private String mVideoShareText;
+    private static final String mYouTubeUrl = "https://www.youtube.com/watch?v=";
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -206,8 +224,30 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (DEBUG) Log.i(LOG_TAG, "onCreateOptionsMenu()");
+
+        inflater.inflate(R.menu.menu_movie_details_fragment, menu);
+
+        // Retrieve the share menu item
+        MenuItem menuItem = menu.findItem(R.id.action_share);
+
+
+            // Get the provider and hold onto it to set/change the share intent.
+            mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+
+
+        // If onLoadFinished happens before this, we can go ahead and set the share intent now.
+        if (mVideoShareText != null) {
+            mShareActionProvider.setShareIntent(createShareVideoIntent());
+        }
+
+    }
+
+
     /**
-     * Called from VideoListAdapter
+     * Called from VideoListAdapter when a video is clicked by user
      * @param key the key to youtube video
      */
     @Override
@@ -417,6 +457,8 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
     }
 
+
+
     private void updateVideoList() {
 
         if (null == mItemUri) {
@@ -425,6 +467,12 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         //If the videos are already in db then no ned to fetch them from TMDB server
         if(checkRecordExists(MovieContract.VideoEntry.CONTENT_URI, MovieContract.VideoEntry.COLUMN_MOVIE_ID, Long.toString(mMovieId))) {
             mpbVideo.setVisibility(ProgressBar.GONE);
+
+            //Set the share intent url if in database
+            getVideoUrl();
+            if (mShareActionProvider != null) {
+                mShareActionProvider.setShareIntent(createShareVideoIntent());
+            }
             return;
         }
 
@@ -442,6 +490,14 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
                     for (VideoItem m : videoItems) {
                         ContentValues movieValues = new ContentValues();
                         if (m.getSite().equals("YouTube")) {
+                            if(0 == counter) {
+                                //Set the share intent url
+                                mVideoShareText = m.getName() + " - " +  mYouTubeUrl + m.getKey();
+                                if (mShareActionProvider != null) {
+                                    mShareActionProvider.setShareIntent(createShareVideoIntent());
+                                }
+                            }
+
                             movieValues.put(MovieContract.VideoEntry.COLUMN_MOVIE_ID, mMovieId);
                             movieValues.put(MovieContract.VideoEntry.COLUMN_NAME, m.getName());
                             movieValues.put(MovieContract.VideoEntry.COLUMN_KEY, m.getKey());
@@ -476,6 +532,21 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
     }
 
+    /**
+     * To create a share intent for movide video
+     * @return
+     */
+    private Intent createShareVideoIntent() {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, mVideoShareText);
+        return shareIntent;
+    }
+
+
+    /**
+     * To toggle the favorite button image when user add or remove favorite
+     */
     private void toggleFavoriteButton(){
         if(mFavorite ==1){
             mibtnFavorite.setImageResource(R.drawable.favorite_on);
@@ -507,6 +578,25 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
             cursor.close();
         }
         return exists;
+    }
+
+
+    /**
+     *  Get the video url from database for share intent
+     */
+    private void getVideoUrl(){
+        Uri uri = MovieContract.VideoEntry.CONTENT_URI.buildUpon()
+                .appendQueryParameter(MovieProvider.QUERY_PARAMETER_LIMIT,
+                        "1").build();
+        Cursor cursor = getActivity().getContentResolver().query(uri, new String[]{MovieContract.VideoEntry.COLUMN_NAME, MovieContract.VideoEntry.COLUMN_KEY}, MovieContract.VideoEntry.COLUMN_MOVIE_ID  + " = ?", new String[]{Long.toString(mMovieId)}, null);
+        try {
+            if (cursor.moveToFirst()) {
+                mVideoShareText = cursor.getString(0) + " - "+  mYouTubeUrl + cursor.getString(1);
+            }
+        } finally{
+            cursor.close();
+        }
+
     }
 
 //FOLLOWING FUNCTIONS FOR DEBUGGING PURPOSE ONLY.

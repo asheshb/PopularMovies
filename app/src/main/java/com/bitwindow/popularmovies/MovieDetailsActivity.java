@@ -20,10 +20,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             if (DEBUG) Log.i(LOG_TAG, "New Fragment");
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.detail_container, new MovieDetailsFragment())
-                    .commit();
-
             Bundle arguments = new Bundle();
             arguments.putParcelable(MovieDetailsFragment.DETAIL_URI, getIntent().getData());
 

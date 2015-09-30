@@ -25,6 +25,9 @@
     <string name="videos">Videos</string>
     <string name="reviews">Reviews</string>
 
+    <!-- To share the video trailer with others -->
+    <string name="action_share">Share Video</string>
+
     <!-- Movie rating description -->
     <plurals
         name="rating_desc">

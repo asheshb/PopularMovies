@@ -26,7 +26,8 @@ public class MovieProvider extends ContentProvider {
     private static final int FAVORITE_LIST = 6;
     public static final int FAVORITE_ID = 7;
     public static final UriMatcher URI_MATCHER;
-
+    public static final String QUERY_PARAMETER_LIMIT = "limit";
+    public static final String QUERY_PARAMETER_OFFSET = "offset";
 
     static {
         URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
@@ -198,6 +199,7 @@ public class MovieProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
                         String sortOrder) {
+
         // Here's the switch statement that, given a URI, will determine what kind of request it is,
         // and query the database accordingly.
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
@@ -245,6 +247,18 @@ public class MovieProvider extends ContentProvider {
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
+        String limit = uri.getQueryParameter(QUERY_PARAMETER_LIMIT);
+        String offset = uri.getQueryParameter(QUERY_PARAMETER_OFFSET);
+        String offset_limit;
+        if(offset != null && limit != null ){
+            offset_limit = offset + "," + limit;
+        } else if(limit!=null){
+            offset_limit = limit;
+        }else{
+            offset_limit = "";
+        }
+
+
         Cursor cursor =
                 builder.query(
                         mOpenHelper.getReadableDatabase(),
@@ -253,7 +267,8 @@ public class MovieProvider extends ContentProvider {
                         selectionArgs,
                         null,
                         null,
-                        sortOrder);
+                        sortOrder,
+                        offset_limit);
 
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
