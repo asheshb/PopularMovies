@@ -14,6 +14,9 @@ import com.bitwindow.popularmovies.MovieDetailsFragment;
 import com.bitwindow.popularmovies.R;
 import com.squareup.picasso.Picasso;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * Created by ashbey on 9/5/2015.
  * This class is used by MovieDetailsFragment > GridView to show movie videos from database
@@ -30,10 +33,7 @@ public class VideoListAdapter extends CursorAdapter {
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         View view = LayoutInflater.from(context).inflate(R.layout.video_list_item, parent, false);
 
-        ViewHolder viewHolder = new ViewHolder();
-        viewHolder.ivVideo = (ImageView) view.findViewById(R.id.ivVideo);
-        viewHolder.tvName = (TextView) view.findViewById(R.id.tvName);
-        viewHolder.ibtnPlay = (ImageButton) view.findViewById(R.id.ibtnPlay);
+        ViewHolder viewHolder = new ViewHolder(view);
         view.setTag(viewHolder);
         return view;
     }
@@ -61,9 +61,13 @@ public class VideoListAdapter extends CursorAdapter {
 
 
     class ViewHolder {
-        TextView tvName;
-        ImageView ivVideo;
-        ImageButton ibtnPlay;
+        @Bind(R.id.tvName) TextView tvName;
+        @Bind(R.id.ivVideo) ImageView ivVideo;
+        @Bind(R.id.ibtnPlay)ImageButton ibtnPlay;
+
+        public ViewHolder(View view){
+            ButterKnife.bind(this,view);
+        }
     }
 
     /**

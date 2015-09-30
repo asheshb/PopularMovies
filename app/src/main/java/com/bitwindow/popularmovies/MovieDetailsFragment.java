@@ -40,6 +40,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Vector;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -111,17 +113,19 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
     // The movie id passed to this fragment
     private Long mMovieId;
 
-    private ImageView mivBackDrop;
-    private TextView mtvTitle;
-    private ImageView mivPoster;
-    private TextView mtvRating;
-    private TextView mtvSynopsis;
-    private TextView mtvGenre;
-    private TextView mtvReleaseDate;
-    private TextView mtvSummaryHeader;
-    private TextView mtvVideoHeader;
-    private TextView mtvReviewHeader;
-    private ImageButton mibtnFavorite;
+
+
+    @Bind(R.id.ivBackDrop) ImageView mivBackDrop;
+    @Bind(R.id.tvTitle) TextView mtvTitle;
+    @Bind(R.id.ivPoster) ImageView mivPoster;
+    @Bind(R.id.tvRating) TextView mtvRating;
+    @Bind(R.id.tvSynopsis) TextView mtvSynopsis;
+    @Bind(R.id.tvGenre)  TextView mtvGenre;
+    @Bind(R.id.tvReleaseDate) TextView mtvReleaseDate;
+    @Bind(R.id.tvSynopsisHeader) TextView mtvSummaryHeader;
+    @Bind(R.id.tvVideoHeader) TextView mtvVideoHeader;
+    @Bind(R.id.tvReviewHeader) TextView mtvReviewHeader;
+    @Bind(R.id.ibtnFavorite) ImageButton mibtnFavorite;
 
     // Video loader progress bar
     private ProgressBar mpbVideo;
@@ -159,6 +163,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         }
 
         View rootView = inflater.inflate(R.layout.fragment_movie_details, container, false);
+        ButterKnife.bind(this,rootView);
 
         mReviewAdapter = new ReviewListAdapter(getActivity(), null, 0);
 
@@ -179,20 +184,6 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
         mpbVideo = ((ProgressBar) rootView.findViewById(R.id.pbVideo));
 
-
-        mivBackDrop = (ImageView) rootView.findViewById(R.id.ivBackDrop);
-        mtvTitle = (TextView) rootView.findViewById(R.id.tvTitle);
-        mivPoster = (ImageView) rootView.findViewById(R.id.ivPoster);
-        mtvRating = (TextView) rootView.findViewById(R.id.tvRating);
-        mtvSynopsis = (TextView) rootView.findViewById(R.id.tvSynopsis);
-        mtvGenre = (TextView) rootView.findViewById(R.id.tvGenre);
-        mtvReleaseDate = (TextView) rootView.findViewById(R.id.tvReleaseDate);
-        mibtnFavorite= (ImageButton) rootView.findViewById(R.id.ibtnFavorite);
-
-
-        mtvSummaryHeader = (TextView) rootView.findViewById(R.id.tvSynopsisHeader);
-        mtvVideoHeader = (TextView) rootView.findViewById(R.id.tvVideoHeader);
-        mtvReviewHeader = (TextView) rootView.findViewById(R.id.tvReviewHeader);
 
         mtvSummaryHeader.setText(getString(R.string.summary));
         mtvVideoHeader.setText(getString(R.string.videos));
@@ -597,6 +588,11 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
             cursor.close();
         }
 
+    }
+
+    @Override public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
     }
 
 //FOLLOWING FUNCTIONS FOR DEBUGGING PURPOSE ONLY.

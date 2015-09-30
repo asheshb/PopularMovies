@@ -18,6 +18,9 @@ import com.bitwindow.popularmovies.R;
 import com.bitwindow.popularmovies.TMDB;
 import com.squareup.picasso.Picasso;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * Created by ashbey on 9/5/2015.
  * This class is used by MainActivityFragment > GridView to show movie posters from database
@@ -32,14 +35,11 @@ public class MovieListAdapter extends CursorAdapter {
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         View view = LayoutInflater.from(context).inflate(R.layout.movie_grid_item, parent, false);
 
-        ViewHolder viewHolder = new ViewHolder();
-        viewHolder.ratingBar = (RatingBar) view.findViewById(R.id.ratingBar);
+        ViewHolder viewHolder = new ViewHolder(view);
         LayerDrawable stars = (LayerDrawable) viewHolder.ratingBar.getProgressDrawable();
         stars.getDrawable(2).setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_ATOP); // for filled stars
         stars.getDrawable(1).setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_ATOP); // for half filled stars
         stars.getDrawable(0).setColorFilter(Color.GRAY,PorterDuff.Mode.SRC_ATOP); // for empty stars
-        viewHolder.poster = (ImageView) view.findViewById(R.id.poster);
-        viewHolder.tvMovieTitle = (TextView) view.findViewById(R.id.tvMovieTitle);
         view.setTag(viewHolder);
         return view;
     }
@@ -60,8 +60,12 @@ public class MovieListAdapter extends CursorAdapter {
 
 
     class ViewHolder {
-        RatingBar ratingBar;
-        ImageView poster;
-        TextView tvMovieTitle;
+        @Bind(R.id.ratingBar) RatingBar ratingBar;
+        @Bind(R.id.poster) ImageView poster;
+        @Bind(R.id.tvMovieTitle) TextView tvMovieTitle;
+
+        public ViewHolder(View view){
+            ButterKnife.bind(this, view);
+        }
     }
 }

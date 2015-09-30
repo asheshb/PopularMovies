@@ -27,7 +27,7 @@
             android:padding="8dp"
             android:paddingLeft="@dimen/details_padding"
             android:paddingRight="@dimen/details_padding"
-            android:textColor="#ffffff"
+            android:textColor="@color/white"
             android:textAppearance="?android:textAppearanceLarge"
             android:textStyle="bold"
             android:gravity="center_vertical"
