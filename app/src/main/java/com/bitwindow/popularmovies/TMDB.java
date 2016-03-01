@@ -9,7 +9,7 @@ public class TMDB {
 
     private final static String IMG_BASE_URL ="http://image.tmdb.org/t/p/";
     //PLEASE INPUT YOUR TMDB KEY HERE
-    public final static String API_KEY = "";
+    public final static String API_KEY = "fd2e2649af1655e26b1049940615a98b";
     public final static String BASE_URL = "https://api.themoviedb.org/3/";
     public final static String ID_PARAM = "id";
     public final static String API_KEY_PARAM = "api_key";
