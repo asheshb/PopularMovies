@@ -240,7 +240,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             Uri movieUri = MovieContract.MovieEntry.CONTENT_URI;
             getActivity().getContentResolver().delete(movieUri, null, null);
 
-            RestClient.getTMDBApiClient().getMovies(sortOrder, TMDB.MIN_VOTE, TMDB.API_KEY, new Callback<List<MovieItem>>() {
+            RestClient.getTMDBApiClient().getMovies(sortOrder, TMDB.MIN_VOTE, BuildConfig.TMDB_API_KEY, new Callback<List<MovieItem>>() {
                 @Override
                 public void success(List<MovieItem> movieItems, Response response) {
                     int size = movieItems.size();
@@ -298,7 +298,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
 
         //Fetch genre list from TMDB server
-        RestClient.getTMDBApiClient().getGenre(TMDB.API_KEY, new Callback<List<GenreItem>>() {
+        RestClient.getTMDBApiClient().getGenre(BuildConfig.TMDB_API_KEY, new Callback<List<GenreItem>>() {
             @Override
             public void success(List<GenreItem> genreItems, Response response) {
                 int size = genreItems.size();

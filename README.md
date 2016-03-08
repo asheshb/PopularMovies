@@ -1,18 +1,23 @@
-#### PopularMovies - Project 1 & Project 2, Android Nanodegree Course, Udacity
+# Popular Movies 
 
+View most popular or highest rated  movies provided by TheMovieDB.org.
 
-Few things I learned/ implemented in this project:
+## Instalation
 
-##### Project 1
+This app requires API key for TMDB.org. You can get it from here [TMDB API](https://www.themoviedb.org/documentation/api "TMDB API")
+Before running the app please place your TMDB API key in TMDB.java line 12
+
+## Learn
+This app was created as a project under Udacity, Android Nanodegree Course.
+
+Things you can learn:
+
 * Fetch movie list from TMDB database and display in grid. 
-* On click of a grid item show the movie details. 
 * Switch between "Most Popular" and "Highest Rated" using overflow menu.
-
-##### Project 2: 
-* Added storing of favorites movie in database. 
-* Showing videos and trailers for movies
-* Added two pane layout for tablets
-* Share intent for video on movie details screen
+* Mark favorites and store in database. 
+* Show videos and trailers for movies.
+* Add two pane layout for tablets
+* Share intent for video on movie details screen.
 
 **NOTE**: Before running the app please place your TMDB API key in TMDB.java line 12
 

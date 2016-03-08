@@ -406,7 +406,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         }
 
         //Fetch reviews from TMDB server and store in database
-        RestClient.getTMDBApiClient().getReviews(Long.toString(mMovieId), TMDB.API_KEY, new Callback<List<ReviewItem>>() {
+        RestClient.getTMDBApiClient().getReviews(Long.toString(mMovieId), BuildConfig.TMDB_API_KEY, new Callback<List<ReviewItem>>() {
             @Override
             public void success(List<ReviewItem> reviewItems, Response response) {
                 int size = reviewItems.size();
@@ -471,7 +471,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         mpbVideo.setVisibility(ProgressBar.VISIBLE);
 
         //Fetch videos from TMDB server and store in database
-        RestClient.getTMDBApiClient().getVideos(Long.toString(mMovieId), TMDB.API_KEY, new Callback<List<VideoItem>>() {
+        RestClient.getTMDBApiClient().getVideos(Long.toString(mMovieId), BuildConfig.TMDB_API_KEY, new Callback<List<VideoItem>>() {
             @Override
             public void success(List<VideoItem> videoItems, Response response) {
                 int size = videoItems.size();
